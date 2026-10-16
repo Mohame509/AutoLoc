@@ -1,23 +1,18 @@
 package tn.esprit.autoloc.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "client")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+@Builder
+public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,17 +27,13 @@ public class Client {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 20)
     private String telephone;
 
     @Column(nullable = false, unique = true, length = 30)
     private String numPermis;
 
-    @Column(nullable = false)
     private LocalDate dateInscription;
 
-
     @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<Reservation> reservations;
 }

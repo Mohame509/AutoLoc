@@ -1,22 +1,17 @@
 package tn.esprit.autoloc.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.ArrayList;
+import lombok.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "agence")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Agence {
+@Builder
+public class Agence implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,22 +20,17 @@ public class Agence {
     @Column(nullable = false, length = 100)
     private String nom;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String ville;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false)
     private String adresse;
 
-    @Column(nullable = false, length = 20)
     private String telephone;
 
+    @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
+    private List<Vehicule> vehicules;
 
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Vehicule> vehicules = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Employe> employes = new ArrayList<>();
+    private List<Employe> employes;
 }

@@ -1,18 +1,16 @@
 package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "employe")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employe {
+@Builder
+public class Employe implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +23,10 @@ public class Employe {
     private String prenom;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private RoleEmploye role;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_agence", nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "id_agence")
     private Agence agence;
 }
